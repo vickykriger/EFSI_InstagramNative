@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, Image, Pressable, StyleSheet } from 'react-native';
-import type { User } from '../interfaz';
+import type { User } from '../interfaz.ts';
 
 interface UserProfileMiniProps {
     usuario: User;

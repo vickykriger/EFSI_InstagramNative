@@ -19,11 +19,12 @@ export default function App() {
       try {
         const respuesta = await api.get('images/search?limit=10');
         const fotosGatos = respuesta.data;
-        
+
+        // Rutas directas relativas a la carpeta public
         const seisUsuarios = [
           {
             nombre: 'SofiVicky',
-            imagen: require('./assets/sofiVicky.jpg'), 
+            imagen: '/sofiVicky.jpg', 
             biografia: 'Amo a mis michis más que a nada en el mundo. 🐾💕',
             cantPublicaciones: 2,
             cantSeguidores: 500,
@@ -53,7 +54,7 @@ export default function App() {
           },
           {
             nombre: 'ValuAilu',
-            imagen: require('./assets/valuAilu.JPG'),
+            imagen: '/valuAilu.JPG',
             biografia: 'Buscando aventuras y un buen tazón de leche ⚔️🥛',
             cantPublicaciones: 1,
             cantSeguidores: 9800,
@@ -71,7 +72,7 @@ export default function App() {
           },
           {
             nombre: 'CeciClari',
-            imagen: require('./assets/ceciClari.JPG'),
+            imagen: '/ceciClari.JPG',
             biografia: 'Odio los lunes. Amo la lasagna y dormir 🍕💤',
             cantPublicaciones: 2,
             cantSeguidores: 15000,
@@ -97,7 +98,7 @@ export default function App() {
           },
           {
             nombre: 'FioEli',
-            imagen: require('./assets/fioEli.JPG'),
+            imagen: '/fioEli.JPG',
             biografia: 'Una gatita muy fina y selectiva con sus humanos 👑',
             cantPublicaciones: 2,
             cantSeguidores: 3200,
@@ -123,7 +124,7 @@ export default function App() {
           },
           {
             nombre: 'SantiAgus',
-            imagen: require('./assets/santiAgus.JPG'),
+            imagen: '/santiAgus.JPG',
             biografia: 'Convierto café en bugs y cazo ratones de biblioteca 💻🐭',
             cantPublicaciones: 2,
             cantSeguidores: 4100,
@@ -149,7 +150,7 @@ export default function App() {
           },
           {
             nombre: 'Warriors',
-            imagen: require('./assets/warriors.JPG'),
+            imagen: '/warriors.JPG',
             biografia: 'Ven por un café y llévate mimos gratis ☕🐾',
             cantPublicaciones: 1,
             cantSeguidores: 8300,
@@ -189,9 +190,10 @@ export default function App() {
 
   const todasLasPublicaciones = usuarios.flatMap(u => u.publicaciones);
 
-  return (
+ return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.appLayout}>
+        {/* Barra lateral izquierda */}
         <SideBar
           onGoHome={() => {
             setUsuarioSeleccionado(null);
@@ -205,52 +207,58 @@ export default function App() {
           }}
         />
 
-        <ScrollView style={styles.mainContent} contentContainerStyle={styles.scrollPadding}>
-          {usuarioSeleccionado ? (
-            <ProfileView
-              usuarioSeleccionado={usuarioSeleccionado}
-              setUsuarioSeleccionado={setUsuarioSeleccionado}
-              setPostSeleccionado={setPostSeleccionado}
-            />
-          ) : postSeleccionado ? (
-            <SingularPostView
-              postSeleccionado={postSeleccionado}
-              setPostSeleccionado={setPostSeleccionado}
-            />
-          ) : (
-            <View style={styles.feedSection}>
-              <StoriesBar usuarios={usuarios} onSelectUser={setUsuarioSeleccionado} />
+        {/* CONTENEDOR PRINCIPAL: Divide la pantalla en Feed (Izquierda) y Sugerencias (Derecha) */}
+        <View style={styles.contentWrapper}>
+          
+          {/* LADO IZQUIERDO: Solo el feed conserva el ScrollView */}
+          <ScrollView style={styles.mainContent} contentContainerStyle={styles.scrollPadding}>
+            {usuarioSeleccionado ? (
+              <ProfileView
+                usuarioSeleccionado={usuarioSeleccionado}
+                setUsuarioSeleccionado={setUsuarioSeleccionado}
+                setPostSeleccionado={setPostSeleccionado}
+              />
+            ) : postSeleccionado ? (
+              <SingularPostView
+                postSeleccionado={postSeleccionado}
+                setPostSeleccionado={setPostSeleccionado}
+              />
+            ) : (
+              <View style={styles.feedSection}>
+                <StoriesBar usuarios={usuarios} onSelectUser={setUsuarioSeleccionado} />
 
-              {todasLasPublicaciones.map((post, index) => {
-                const usuarioDelPost = usuarios.find(u => u.nombre === post.nombreUsuario);
-                return (
-                  <PostCard
-                    key={index}
-                    publicacion={post}
-                    imagenUsuario={usuarioDelPost?.imagen}
-                    onSelect={() => setPostSeleccionado(post)}
-                    onSelectUser={() => {
-                      if (usuarioDelPost) {
-                        setUsuarioSeleccionado(usuarioDelPost);
-                      }
-                    }}
-                  />
-                );
-              })}
+                {todasLasPublicaciones.map((post, index) => {
+                  const usuarioDelPost = usuarios.find(u => u.nombre === post.nombreUsuario);
+                  return (
+                    <PostCard
+                      key={index}
+                      publicacion={post}
+                      imagenUsuario={usuarioDelPost?.imagen}
+                      onSelect={() => setPostSeleccionado(post)}
+                      onSelectUser={() => {
+                        if (usuarioDelPost) {
+                          setUsuarioSeleccionado(usuarioDelPost);
+                        }
+                      }}
+                    />
+                  );
+                })}
+              </View>
+            )}
+          </ScrollView>
+
+          {/* LADO DERECHO: La barra de sugerencias fija al costado (solo si no estás viendo un perfil o post) */}
+          {!postSeleccionado && !usuarioSeleccionado && (
+            <View style={styles.suggestionsSection}>
+              <SuggestionsBar listaSugeridos={usuarios} onSelectUser={setUsuarioSeleccionado} />
             </View>
           )}
-        </ScrollView>
 
-        <View style={styles.rightSidebar}>
-          {!postSeleccionado && !usuarioSeleccionado && (
-            <SuggestionsBar listaSugeridos={usuarios} onSelectUser={setUsuarioSeleccionado} />
-          )}
         </View>
       </View>
     </SafeAreaView>
   );
 }
-
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
@@ -258,31 +266,34 @@ const styles = StyleSheet.create({
   },
   appLayout: {
     flex: 1,
+    flexDirection: 'row', 
+  },
+  contentWrapper: {
+    flex: 1,
     flexDirection: 'row',
-    alignItems: 'flex-start',
-    backgroundColor: '#fafafa',
+    justifyContent: 'center', 
+    maxWidth: 1000,        
+    marginHorizontal: 'auto',
+    width: '100%',
   },
   mainContent: {
     flex: 1,
-    backgroundColor: '#fafafa',
+    maxWidth: 600,          
+    backgroundColor: '#ffffff',
   },
   scrollPadding: {
     paddingBottom: 32,
-    paddingTop: 16,
-    paddingHorizontal: 16,
+    paddingTop: 20,
   },
   feedSection: {
     flexDirection: 'column',
     width: '100%',
-    maxWidth: 760,
-    alignSelf: 'center',
   },
-  rightSidebar: {
-    width: 320,
-    minWidth: 320,
-    paddingTop: 24,
-    paddingHorizontal: 12,
-    backgroundColor: '#fafafa',
+  suggestionsSection: {
+    width: 350,   
+    paddingHorizontal: 24,
+    marginTop: 24,
+    display: 'flex', 
   },
   loadingContainer: {
     flex: 1,

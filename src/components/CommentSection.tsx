@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import type { Comentario } from '../interfaz';
+import type { Comentario } from '../interfaz.ts';
 
 interface CommentSectionProps {
   listaComentarios: Comentario[];
