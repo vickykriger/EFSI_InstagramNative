@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Svg, { Path, Circle, Line, Polygon, Rect } from 'react-native-svg';
-import NavItem from './NavItem';
 
 export default function SideBar() {
     return (
