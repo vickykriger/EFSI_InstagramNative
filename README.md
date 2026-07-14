@@ -1,3 +1,8 @@
+# EFSI_InstagramNative/
+
+## 📂 Estructura del Proyecto
+
+```text
 EFSI_InstagramNative/
 │
 ├── App.js
@@ -27,7 +32,7 @@ EFSI_InstagramNative/
         ├── SuggestionsBar.tsx
         ├── SuggestionsList.tsx
         ├── UserProfileMini.tsx
-
+        └── UserSuggestionsList.tsx
 `src/interfaz.ts` define los tipos centrales usados por la aplicación:
 
 - `Comentario`
