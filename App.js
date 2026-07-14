@@ -194,18 +194,7 @@ export default function App() {
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.appLayout}>
         {/* Barra lateral izquierda */}
-        <SideBar
-          onGoHome={() => {
-            setUsuarioSeleccionado(null);
-            setPostSeleccionado(null);
-          }}
-          onGoToProfile={() => {
-            if (usuarios.length > 0) {
-              setUsuarioSeleccionado(usuarios[0]);
-              setPostSeleccionado(null);
-            }
-          }}
-        />
+        <SideBar/>
 
         {/* CONTENEDOR PRINCIPAL: Divide la pantalla en Feed (Izquierda) y Sugerencias (Derecha) */}
         <View style={styles.contentWrapper}>
@@ -266,34 +255,31 @@ const styles = StyleSheet.create({
   },
   appLayout: {
     flex: 1,
-    flexDirection: 'row', 
+    flexDirection: 'column', 
   },
   contentWrapper: {
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center', 
-    maxWidth: 1000,        
-    marginHorizontal: 'auto',
+    flexDirection: 'column', 
+    alignItems: 'center',
     width: '100%',
+    maxWidth: 600, 
+    marginHorizontal: 'auto',
   },
   mainContent: {
     flex: 1,
-    maxWidth: 600,          
+    width: '100%',
     backgroundColor: '#ffffff',
   },
   scrollPadding: {
     paddingBottom: 32,
-    paddingTop: 20,
+    paddingTop: 0,
   },
   feedSection: {
     flexDirection: 'column',
     width: '100%',
   },
   suggestionsSection: {
-    width: 350,   
-    paddingHorizontal: 24,
-    marginTop: 24,
-    display: 'flex', 
+    display: 'none',
   },
   loadingContainer: {
     flex: 1,
