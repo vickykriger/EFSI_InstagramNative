@@ -27,8 +27,6 @@ EFSI_InstagramNative/
         ├── SuggestionsBar.tsx
         ├── SuggestionsList.tsx
         ├── UserProfileMini.tsx
-        └── UserSuggestionsList.tsx
-```
 
 `src/interfaz.ts` define los tipos centrales usados por la aplicación:
 
